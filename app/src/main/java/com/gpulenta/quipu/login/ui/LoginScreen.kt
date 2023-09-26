@@ -80,11 +80,9 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, context: Context) {
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     val coroutineScope = rememberCoroutineScope()
 
-
     if (isLoading) {
         Box(Modifier.fillMaxSize()) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
-
         }
     } else {
         Column(modifier = modifier) {
@@ -102,9 +100,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, context: Context) {
                 }
             }
             Spacer(modifier = Modifier.padding(4.dp))
-            RegisterButton() {
-
-            }
+            RegisterButton { viewModel.onRegisterSelected() }
         }
     }
 }
@@ -131,9 +127,9 @@ fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
 }
 
 @Composable
-fun RegisterButton( onLoginSelected: () -> Unit) {
+fun RegisterButton(onNavigateToRegister: () -> Unit) {
     Button(
-        onClick = { onLoginSelected() },
+        onClick = { onNavigateToRegister() },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
@@ -203,7 +199,7 @@ fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
 @Composable
 fun HeaderImage(modifier: Modifier) {
     Image(
-        painter = painterResource(id = R.drawable.logo),
+        painter = painterResource(id = R.drawable.logo_login),
         contentDescription = "Header",
         modifier = modifier
     )
