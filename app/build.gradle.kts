@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -60,7 +62,11 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    
+
+    // SQLite Implementation
+    implementation("androidx.room:room-runtime:2.5.0")
+    annotationProcessor("androidx.room:room-compiler:2.5.0")
+
     //Material Design Implementation
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material:1.2.0")
