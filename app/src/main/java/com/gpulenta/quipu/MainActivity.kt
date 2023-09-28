@@ -12,27 +12,45 @@ import androidx.compose.ui.Modifier
 import com.gpulenta.quipu.dashboard.ui.DashboardScreen
 import com.gpulenta.quipu.login.ui.LoginScreen
 import com.gpulenta.quipu.login.ui.LoginViewModel
+import com.gpulenta.quipu.register.ui.RegisterScreen
+import com.gpulenta.quipu.register.ui.RegisterViewModel
 import com.gpulenta.quipu.ui.theme.QuipuTheme
 
 class MainActivity : ComponentActivity() {
     private val loginViewModel: LoginViewModel by viewModels()
+    private val registerViewModel: RegisterViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             QuipuTheme {
                 val navigateToDashboard = loginViewModel.navigateToDashboard.observeAsState(false)
+                val navigateToRegister = loginViewModel.navigateToRegister.observeAsState(false)
+                val registrationSuccessful = registerViewModel.registrationSuccessful.observeAsState(false)
 
-                if (navigateToDashboard.value) {
-                    DashboardScreen()
+                if (registrationSuccessful.value) {
+                    // Si el registro es exitoso, muestra la pantalla de inicio de sesión
+                    LoginScreen(loginViewModel)
                 } else {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-                        LoginScreen(loginViewModel)
+                    when {
+                        navigateToDashboard.value -> {
+                            DashboardScreen()
+                        }
+                        navigateToRegister.value -> {
+                            RegisterScreen(registerViewModel)
+                        }
+                        else -> {
+                            Surface(
+                                modifier = Modifier.fillMaxSize(),
+                                color = MaterialTheme.colorScheme.background
+                            ) {
+                                LoginScreen(loginViewModel)
+                            }
+                        }
                     }
                 }
             }
         }
     }
 }
+

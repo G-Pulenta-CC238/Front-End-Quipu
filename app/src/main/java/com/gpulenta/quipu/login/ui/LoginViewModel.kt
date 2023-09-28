@@ -88,6 +88,14 @@ class LoginViewModel : ViewModel() {
             }
         }
     }
+
+    private val _navigateToRegister = MutableLiveData<Boolean>()
+    val navigateToRegister: LiveData<Boolean> get() = _navigateToRegister
+
+    fun onRegisterSelected() {
+        _navigateToRegister.value = true
+    }
+
     fun onDialogDismissed() {
         _showDialog.value = false
     }
