@@ -61,6 +61,21 @@ class LoginViewModel : ViewModel() {
             Log.d("StoredUserId", "No user ID stored.")
         }
     }
+
+    private fun clearUserIdFromSharedPreferences(context: Context) {
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("YourPreferencesName", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.remove("USER_ID")
+        editor.apply()
+    }
+
+    fun logOut(context: Context) {
+        clearUserIdFromSharedPreferences(context)
+        _navigateToDashboard.value = false
+        _navigateToRegister.value = false
+    }
+
     fun onLoginSelected(context: Context) {
         val userEmail = email.value
         val userPassword = password.value

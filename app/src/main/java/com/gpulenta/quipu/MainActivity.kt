@@ -34,7 +34,8 @@ class MainActivity : ComponentActivity() {
                 } else {
                     when {
                         navigateToDashboard.value -> {
-                            DashboardScreen()
+                            //DashboardScreen()
+                            DashboardScreen(loginViewModel, this)
                         }
                         navigateToRegister.value -> {
                             RegisterScreen(registerViewModel)
