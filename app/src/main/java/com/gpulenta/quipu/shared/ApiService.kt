@@ -1,5 +1,7 @@
-package com.gpulenta.quipu.login.data
+package com.gpulenta.quipu.shared
 
+import com.gpulenta.quipu.dashboard.data.ProductData
+import com.gpulenta.quipu.login.data.ApiResponse
 import com.gpulenta.quipu.register.data.UserData
 import retrofit2.Call
 import retrofit2.Response
@@ -16,4 +18,6 @@ interface ApiService {
     ): Response<ApiResponse>
     @POST("user")
     fun createUser(@Body userData: UserData): Call<Unit>
+    @GET("products")
+    suspend fun getProducts(): List<ProductData>
 }

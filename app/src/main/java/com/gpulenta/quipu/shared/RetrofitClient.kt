@@ -1,6 +1,5 @@
 package com.gpulenta.quipu.shared
 
-import com.gpulenta.quipu.login.data.ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

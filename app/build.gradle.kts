@@ -62,9 +62,11 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("io.coil-kt:coil-compose:1.4.0")
 
     // SQLite Implementation
     implementation("androidx.room:room-runtime:2.5.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
     annotationProcessor("androidx.room:room-compiler:2.5.0")
 
     //Material Design Implementation
