@@ -128,6 +128,7 @@ fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
 
 @Composable
 fun RegisterButton(onNavigateToRegister: () -> Unit) {
+
     Button(
         onClick = { onNavigateToRegister() },
         modifier = Modifier

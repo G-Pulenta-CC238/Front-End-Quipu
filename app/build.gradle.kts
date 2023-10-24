@@ -53,6 +53,10 @@ android {
 
 dependencies {
 
+        implementation( "androidx.compose.ui:ui:1.0.1")
+
+
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.compose.runtime:runtime-livedata:1.2.1")

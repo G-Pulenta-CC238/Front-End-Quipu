@@ -32,6 +32,7 @@ import com.gpulenta.quipu.R
 import com.gpulenta.quipu.dashboard.data.ProductData
 import com.gpulenta.quipu.shared.RetrofitClient
 
+
 @Preview
 @Composable
 fun DashboardScreen() {
@@ -57,6 +58,7 @@ fun DashboardScreen() {
 
     }
 }
+
 
 @Composable
 fun ProductRecyclerView(products: List<ProductData>) {
@@ -151,18 +153,7 @@ fun ProductListItem(product: ProductData) {
                     contentScale = ContentScale.Crop
                 )
             }
-            Text(
-                text = buildAnnotatedString {
-                    pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-                    append(product.productCategory.toString())
-                    pop()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .padding(vertical = 24.dp),
-                textAlign = TextAlign.End
-            )
+
         }
     }
 }
