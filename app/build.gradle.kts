@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,11 +5,11 @@ plugins {
 
 android {
     namespace = "com.gpulenta.quipu"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.gpulenta.quipu"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -37,6 +35,8 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        allWarningsAsErrors = false
+        freeCompilerArgs = listOf("-opt-in=androidx.compose.material3.ExperimentalMaterial3Api")
     }
     buildFeatures {
         compose = true
@@ -52,31 +52,30 @@ android {
 }
 
 dependencies {
-
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.1")
-    implementation("androidx.activity:activity-ktx:1.3.1")
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.activity:activity-compose:1.8.0")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("io.coil-kt:coil-compose:1.4.0")
-
-    // SQLite Implementation
-    implementation("androidx.room:room-runtime:2.5.0")
-    implementation("androidx.recyclerview:recyclerview:1.3.1")
-    annotationProcessor("androidx.room:room-compiler:2.5.0")
-
-    //Material Design Implementation
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material:1.2.0")
-
-    // Api Service Implementation
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.runtime:runtime:1.5.4")
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation("io.coil-kt:coil-compose:1.4.0")
+    // LiveData
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0-alpha08")
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.4")
+    // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
+    // Coil
+    implementation("io.coil-kt:coil-compose:1.4.0")
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
