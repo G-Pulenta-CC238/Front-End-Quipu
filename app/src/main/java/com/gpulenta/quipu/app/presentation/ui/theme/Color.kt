@@ -1,4 +1,4 @@
-package com.gpulenta.quipu.ui.theme
+package com.gpulenta.quipu.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
