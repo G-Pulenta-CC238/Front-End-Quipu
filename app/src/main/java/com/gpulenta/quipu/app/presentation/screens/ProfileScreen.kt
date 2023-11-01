@@ -278,6 +278,8 @@ fun ProfileScreen(viewModel: ProfileViewModel, navController: NavHostController)
                     when (item.title) {
                         "Home" -> navController.navigate("Dashboard")
                         "News" -> navController.navigate("New")
+                        "Cart" -> navController.navigate("ShoppingCart")
+                        "Trip" -> navController.navigate("Trip")
                         "Exit" -> {
                             val sharedPreferences =
                                 context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
