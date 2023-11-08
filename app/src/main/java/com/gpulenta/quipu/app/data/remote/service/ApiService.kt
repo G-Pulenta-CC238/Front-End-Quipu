@@ -3,6 +3,7 @@ package com.gpulenta.quipu.data.remote.service
 import com.gpulenta.quipu.app.domain.model.request.Offer
 import com.gpulenta.quipu.app.domain.model.response.OfferResponse
 import com.gpulenta.quipu.app.domain.model.response.OfferStatusUpdate
+import com.gpulenta.quipu.app.domain.model.response.Payment
 import com.gpulenta.quipu.domain.model.request.CartItemData
 import com.gpulenta.quipu.domain.model.request.LoginRequest
 import com.gpulenta.quipu.domain.model.request.RegisterRequest
@@ -67,5 +68,14 @@ interface ApiService {
 
     @PUT("offer/{id}")
     suspend fun updateOfferStatus(@Path("id") offerId: Long, @Body statusUpdate: OfferStatusUpdate): Response<Void>
+
+    @POST("payment")
+    suspend fun createPayment(@Body payment: Payment): Response<Void>
+
+    @GET("payment/by-user/{userId}")
+    suspend fun getPaymentByUser(@Path("userId") userId: Long): Response<Payment>
+
+    @DELETE("payment/{id}")
+    suspend fun deletePayment(@Path("id") paymentId: Long): Response<Void>
 
 }

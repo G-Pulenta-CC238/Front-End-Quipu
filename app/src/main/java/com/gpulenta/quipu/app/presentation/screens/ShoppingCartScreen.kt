@@ -109,7 +109,7 @@ fun ShoppingCartScreen(viewModel: ShoppingCartViewModel, navController: NavHostC
                 try {
                     GlobalScope.launch {
                         val offer = Offer(
-                            offerStatus = "On Live",
+                            offerStatus = "Waiting for approval",
                             offerPrice = totalProductPrice,
                             userId = userId,
                             shoppingCartId = shoppingCartId

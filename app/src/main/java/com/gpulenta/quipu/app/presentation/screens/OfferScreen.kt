@@ -116,6 +116,9 @@ fun OfferScreen(offerViewModel: OfferViewModel, navController: NavHostController
                     when (item.title) {
                         "Home" -> navController.navigate("Dashboard")
                         "News" -> navController.navigate("New")
+                        "Offers" -> navController.navigate("Offer")
+                        "Profile" -> navController.navigate("Profile")
+                        "Cart" -> navController.navigate("ShoppingCart")
 
                         else -> {}
                     }
