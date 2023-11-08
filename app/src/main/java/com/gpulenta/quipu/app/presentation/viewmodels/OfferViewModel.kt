@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gpulenta.quipu.app.domain.model.response.OfferResponse
+import com.gpulenta.quipu.app.domain.model.response.OfferStatusUpdate
 import com.gpulenta.quipu.data.remote.retrofit.RetrofitClient
 import com.gpulenta.quipu.data.remote.retrofit.RetrofitClient.apiService
 import com.gpulenta.quipu.data.remote.service.ApiService
@@ -25,6 +26,18 @@ class OfferViewModel : ViewModel() {
                 val response = apiService.getOffers()
                 if (response.isNotEmpty()) {
                     _offers.postValue(response)
+                }
+            } catch (e: Exception) {
+                // Manejar errores según tus necesidades
+            }
+        }
+    }
+    fun updateOfferStatus(offerId: Long, offerStatusUpdate: OfferStatusUpdate) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.updateOfferStatus(offerId, offerStatusUpdate)
+                if (response.isSuccessful) {
+                    // Manejar la respuesta del servidor
                 }
             } catch (e: Exception) {
                 // Manejar errores según tus necesidades
