@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Flight
 import androidx.compose.material.icons.filled.Grade
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
@@ -108,6 +109,7 @@ fun NewScreen(viewModel: NewViewModel, navController: NavHostController) {
                         "Home" -> navController.navigate("Dashboard")
                         "Cart" -> navController.navigate("ShoppingCart")
                         "Trip" -> navController.navigate("Trip")
+                        "Card" -> navController.navigate("Payment")
                         "Exit" -> navController.navigate("SignIn")
                         else -> {}
                     }
@@ -125,6 +127,7 @@ val itemsa = listOf(
     NavItema("Cart", Icons.Default.ShoppingCart),
     NavItema("Profile", Icons.Default.Person),
     NavItema("Trip", Icons.Default.Flight),
+    NavItema("Card", Icons.Default.Payment),
     NavItema("Exit", Icons.Default.ExitToApp)
 )
 
