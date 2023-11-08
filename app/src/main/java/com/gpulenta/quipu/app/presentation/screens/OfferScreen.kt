@@ -19,9 +19,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,10 +41,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.gpulenta.quipu.R
 import com.gpulenta.quipu.app.domain.model.response.OfferResponse
+import com.gpulenta.quipu.app.domain.model.response.OfferStatusUpdate
 import com.gpulenta.quipu.app.presentation.viewmodels.OfferViewModel
 import com.gpulenta.quipu.data.remote.retrofit.RetrofitClient.apiService
 import com.gpulenta.quipu.domain.model.response.CartItemResponse
@@ -85,7 +89,7 @@ fun OfferScreen(offerViewModel: OfferViewModel, navController: NavHostController
         }
         if (offers.isNotEmpty()) {
             // Mostrar la lista de ofertas
-            OfferList(offers = offers)
+            OfferList(offers = offers, navController = navController)
         } else {
             // Manejar cuando no hay ofertas disponibles
             Text(text = "Not exist offers")
@@ -123,16 +127,16 @@ fun OfferScreen(offerViewModel: OfferViewModel, navController: NavHostController
 }
 
 @Composable
-fun OfferList(offers: List<OfferResponse>) {
+fun OfferList(offers: List<OfferResponse>, navController: NavHostController) {
     LazyColumn {
         items(offers) { offer ->
-            OfferItem(offer = offer)
+            OfferItem(offer = offer, offerViewModel = viewModel(), navController = navController)
         }
     }
 }
 
 @Composable
-fun OfferItem(offer: OfferResponse) {
+fun OfferItem(offer: OfferResponse, offerViewModel: OfferViewModel, navController: NavHostController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -148,8 +152,10 @@ fun OfferItem(offer: OfferResponse) {
                 text = "Price Offer: ${offer.offerPrice}",
                 style = typography.body1
             )
-
-
+            Text(
+                text = "Status: ${offer.offerStatus}",
+                style = typography.body1
+            )
             val cartItems = remember { mutableStateOf<List<CartItemResponse>>(emptyList()) }
 
             LaunchedEffect(key1 = offer.shoppingCartId) {
@@ -188,15 +194,15 @@ fun OfferItem(offer: OfferResponse) {
                                 )
                             }
                             Text(
-                                text = "Producto: ${cartItem.product.productName}",
+                                text = "Products: ${cartItem.product.productName}",
                                 style = typography.body2
                             )
                             Text(
-                                text = "Cantidad: ${cartItem.productQuantity}",
+                                text = "Quantity: ${cartItem.productQuantity}",
                                 style = typography.body2
                             )
                             Text(
-                                text = "Precio: ${cartItem.cartSubtotal}",
+                                text = "Price: ${cartItem.cartSubtotal}",
                                 style = typography.body2
                             )
                         }
@@ -209,6 +215,31 @@ fun OfferItem(offer: OfferResponse) {
                     style = typography.body1
                 )
             }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón para actualizar la oferta
+
+// En el OfferItem Composable
+            Button(
+                onClick = {
+                    val offerStatusUpdate = OfferStatusUpdate(
+                        id = offer.id,
+                        offerStatus = "Accepted", // Cambia el estado según tus necesidades
+                        offerPrice = offer.offerPrice, // Mantén el precio
+                        userId = offer.userId, // Mantén el ID del usuario
+                        shoppingCartId = offer.shoppingCartId // Mantén el ID del carrito
+                    )
+                    navController.navigate("Offer")
+                    offerViewModel.updateOfferStatus(offer.id, offerStatusUpdate)
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                Text(text = "Accept Offer")
+            }
+
+
+
         }
     }
 }
