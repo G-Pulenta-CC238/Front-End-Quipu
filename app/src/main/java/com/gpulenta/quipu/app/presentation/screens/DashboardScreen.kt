@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeveloperBoard
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Flight
 import androidx.compose.material.icons.filled.Grade
@@ -141,7 +142,7 @@ data class NavItem(val title: String, val icon: ImageVector)
 
 val items = listOf(
     NavItem("Home", Icons.Default.Home),
-    NavItem("Offer", Icons.Default.Grade),
+    NavItem("Offer", Icons.Default.DeveloperBoard),
     NavItem("News", Icons.Default.Grade),
     NavItem("Cart", Icons.Default.ShoppingCart),
     NavItem("Trips", Icons.Default.Flight),
