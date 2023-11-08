@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,10 +35,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
+import com.gpulenta.quipu.app.domain.model.request.Offer
 import com.gpulenta.quipu.data.remote.retrofit.RetrofitClient
 import com.gpulenta.quipu.domain.model.response.CartItemResponse
 import com.gpulenta.quipu.domain.model.response.ProductResponse
 import com.gpulenta.quipu.presentation.viewmodels.ShoppingCartViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ShoppingCartScreen(viewModel: ShoppingCartViewModel, navController: NavHostController) {
@@ -69,6 +73,12 @@ fun ShoppingCartScreen(viewModel: ShoppingCartViewModel, navController: NavHostC
             }
         }
     }
+    var totalProductPrice by remember { mutableDoubleStateOf(0.0) }
+
+    LaunchedEffect(cartItems) {
+        val total = cartItems.sumOf { it.product.productPrice }
+        totalProductPrice = total
+    }
 
     // Mostrar los elementos del carrito
     Column(
@@ -86,15 +96,48 @@ fun ShoppingCartScreen(viewModel: ShoppingCartViewModel, navController: NavHostC
             // Mostrar la lista de elementos del carrito
             LazyColumn {
                 items(cartItems) { cartItem ->
-                    ShoppingCartItem(cartItem.product, cartItem, viewModel)
+                    ShoppingCartItem(cartItem.product, cartItem, viewModel, totalProductPrice)
                 }
             }
         }
+        val userId = sharedPreferences.getLong("id", 1)
+        val shoppingCartId = sharedPreferences.getLong("idShoppingCart", 0L)
+        Button(
+            onClick = {
+                // Realizar una solicitud POST al servidor
+                val apiService = RetrofitClient.apiService
+                try {
+                    GlobalScope.launch {
+                        val offer = Offer(
+                            offerStatus = "On Live",
+                            offerPrice = totalProductPrice,
+                            userId = userId,
+                            shoppingCartId = shoppingCartId
+                        )
+                        val response = apiService.createOffer(offer)
+                    }
+                } catch (e: Exception) {
+                    // Manejar errores de la solicitud
+                }
+            },
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .height(36.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFBA1F33),
+                contentColor = Color.White
+            ),
+        ) {
+            Text("Oferta")
+        }
     }
+
+
 }
 
 @Composable
-fun ShoppingCartItem(product: ProductResponse, cartItem : CartItemResponse, viewModel: ShoppingCartViewModel) {
+fun ShoppingCartItem(product: ProductResponse, cartItem : CartItemResponse, viewModel: ShoppingCartViewModel, totalProductPrice: Double) {
 
 
     Row(
@@ -150,5 +193,7 @@ fun ShoppingCartItem(product: ProductResponse, cartItem : CartItemResponse, view
             }
         }
     }
+
+
 }
 

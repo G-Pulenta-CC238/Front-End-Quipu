@@ -14,6 +14,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.gpulenta.quipu.app.presentation.screens.OfferScreen
+import com.gpulenta.quipu.app.presentation.viewmodels.OfferViewModel
 import com.gpulenta.quipu.presentation.screens.DashboardScreen
 import com.gpulenta.quipu.presentation.screens.NewScreen
 import com.gpulenta.quipu.presentation.screens.ProfileScreen
@@ -49,6 +51,7 @@ class MainActivity : ComponentActivity() {
                     val profileViewModel = remember { ProfileViewModel(context) }
                     val shoppingCartViewModel = remember { ShoppingCartViewModel(context) }
                     val tripViewModel = remember { TripViewModel() }
+                    val offerViewModel = remember { OfferViewModel() }
 
                     NavHost(
                         navController = navController,
@@ -87,6 +90,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("Trip") {
                             TripScreen(tripViewModel , navController)
+                        }
+                        composable("Offer") {
+                            OfferScreen(offerViewModel, navController)
                         }
                     }
                 }
