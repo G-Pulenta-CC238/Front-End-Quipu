@@ -12,6 +12,6 @@ data class ShoppingCartResponses(
     val id: Int,
     val cartStatus: String,
     val userId: Int,
-    val user: Any? // Esto depende de la estructura real de "user" en la respuesta
+    val user: Any?
 )
 

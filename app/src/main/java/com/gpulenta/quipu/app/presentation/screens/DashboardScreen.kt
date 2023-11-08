@@ -114,6 +114,7 @@ fun DashboardScreen(viewModel: DashboardViewModel, navController: NavHostControl
                 onClick = {
                     selectedNavItem = index
                     when (item.title) {
+                        "Offer" -> navController.navigate("Offer")
                         "News" -> navController.navigate("New")
                         "Exit" -> {
                             val sharedPreferences =
@@ -140,6 +141,7 @@ data class NavItem(val title: String, val icon: ImageVector)
 
 val items = listOf(
     NavItem("Home", Icons.Default.Home),
+    NavItem("Offer", Icons.Default.Grade),
     NavItem("News", Icons.Default.Grade),
     NavItem("Cart", Icons.Default.ShoppingCart),
     NavItem("Trips", Icons.Default.Flight),

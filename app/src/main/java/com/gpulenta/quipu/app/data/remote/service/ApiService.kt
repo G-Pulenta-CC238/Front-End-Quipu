@@ -1,5 +1,8 @@
 package com.gpulenta.quipu.data.remote.service
 
+import com.gpulenta.quipu.app.domain.model.request.Offer
+import com.gpulenta.quipu.app.domain.model.response.OfferResponse
+import com.gpulenta.quipu.app.domain.model.response.OfferStatusUpdate
 import com.gpulenta.quipu.domain.model.request.CartItemData
 import com.gpulenta.quipu.domain.model.request.LoginRequest
 import com.gpulenta.quipu.domain.model.request.RegisterRequest
@@ -55,5 +58,14 @@ interface ApiService {
 
     @GET("trip/by-user/{userId}")
     suspend fun getTripsByUser(@Path("userId") userId: Long): Response<List<Trip>>
+
+    @POST("offer")
+    suspend fun createOffer(@Body offer: Offer): Response<Void>
+
+    @GET("offer")
+    suspend fun getOffers(): List<OfferResponse>
+
+    @PUT("offer/{id}")
+    suspend fun updateOfferStatus(@Path("id") offerId: Long, @Body statusUpdate: OfferStatusUpdate): Response<Void>
 
 }
