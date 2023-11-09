@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -58,7 +59,7 @@ import com.gpulenta.quipu.presentation.screens.itemsa
 fun OfferScreen(offerViewModel: OfferViewModel, navController: NavHostController) {
     val offers = offerViewModel.offers.observeAsState(initial = emptyList()).value
     var selectedNavItem by remember { mutableStateOf(0) }
-
+    val context = LocalContext.current
     // Llamar a fetchOffers cuando sea necesario, por ejemplo, en el inicio de la pantalla
     // offerViewModel.fetchOffers()
     LaunchedEffect(key1 = true) {
@@ -119,7 +120,16 @@ fun OfferScreen(offerViewModel: OfferViewModel, navController: NavHostController
                         "Offers" -> navController.navigate("Offer")
                         "Profile" -> navController.navigate("Profile")
                         "Cart" -> navController.navigate("ShoppingCart")
-
+                        "Card" -> navController.navigate("Payment")
+                        "Exit" -> {
+                            val sharedPreferences =
+                                context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+                            with(sharedPreferences.edit()) {
+                                clear()
+                                apply()
+                            }
+                            navController.navigate("SignIn")
+                        }
                         else -> {}
                     }
                 },
