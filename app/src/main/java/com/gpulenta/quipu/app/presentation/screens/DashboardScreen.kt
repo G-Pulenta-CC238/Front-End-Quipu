@@ -108,7 +108,7 @@ fun DashboardScreen(viewModel: DashboardViewModel, navController: NavHostControl
                     Text(
                         text = item.title,
                         color = Color.White,
-                        style = TextStyle(fontSize = 12.sp)
+                        style = TextStyle(fontSize = 10.sp)
                     )
                 },
                 selected = index == selectedNavItem,
@@ -117,6 +117,7 @@ fun DashboardScreen(viewModel: DashboardViewModel, navController: NavHostControl
                     when (item.title) {
                         "Offer" -> navController.navigate("Offer")
                         "News" -> navController.navigate("New")
+                        "My Offer" -> navController.navigate("MyOffer")
                         "Exit" -> {
                             val sharedPreferences =
                                 context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
@@ -141,8 +142,8 @@ fun DashboardScreen(viewModel: DashboardViewModel, navController: NavHostControl
 data class NavItem(val title: String, val icon: ImageVector)
 
 val items = listOf(
-    NavItem("Home", Icons.Default.Home),
     NavItem("Offer", Icons.Default.DeveloperBoard),
+    NavItem("My Offer", Icons.Default.DeveloperBoard),
     NavItem("News", Icons.Default.Grade),
     NavItem("Cart", Icons.Default.ShoppingCart),
     NavItem("Trips", Icons.Default.Flight),

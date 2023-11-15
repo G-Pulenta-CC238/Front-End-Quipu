@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.gpulenta.quipu.app.presentation.screens.MyOfferScreen
 import com.gpulenta.quipu.app.presentation.screens.OfferScreen
 import com.gpulenta.quipu.app.presentation.screens.PaymentScreen
 import com.gpulenta.quipu.app.presentation.viewmodels.OfferViewModel
@@ -99,6 +100,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("Payment") {
                             PaymentScreen(paymentViewModel, navController )
+                        }
+                        composable("MyOffer") {
+                            MyOfferScreen(offerViewModel, navController)
                         }
                     }
                 }

@@ -1,9 +1,6 @@
 package com.gpulenta.quipu.app.presentation.screens
 
-
 import android.content.Context
-import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,19 +11,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Button
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme.typography
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,59 +46,46 @@ import com.gpulenta.quipu.R
 import com.gpulenta.quipu.app.domain.model.response.OfferResponse
 import com.gpulenta.quipu.app.domain.model.response.OfferStatusUpdate
 import com.gpulenta.quipu.app.presentation.viewmodels.OfferViewModel
-import com.gpulenta.quipu.data.remote.retrofit.RetrofitClient.apiService
+import com.gpulenta.quipu.data.remote.retrofit.RetrofitClient
 import com.gpulenta.quipu.domain.model.response.CartItemResponse
-import com.gpulenta.quipu.domain.model.response.UserProfile
-import com.gpulenta.quipu.presentation.screens.BackGround
 import com.gpulenta.quipu.presentation.screens.itemsa
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-
 
 @Composable
-fun OfferScreen(offerViewModel: OfferViewModel, navController: NavHostController) {
-    val offers = offerViewModel.offers.observeAsState(initial = emptyList()).value
+fun MyOfferScreen(offerViewModel: OfferViewModel, navController: NavHostController) {
+
     val myOffers = offerViewModel.myOffers.observeAsState(initial = emptyList()).value
     var selectedNavItem by remember { mutableStateOf(0) }
     val context = LocalContext.current
-    val userId = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getLong("userId", 0L)
+    // Llamar a fetchOffers cuando sea necesario, por ejemplo, en el inicio de la pantalla
+    // offerViewModel.fetchOffers()
     LaunchedEffect(key1 = true) {
         offerViewModel.fetchOffers()
-        offerViewModel.getMyOffers(userId)
+        offerViewModel.getMyOffers(6L)
     }
     Image(
         painter = painterResource(id = R.drawable.background_quipu), contentDescription = "shape",
         modifier = Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds
     )
-
-    Spacer(modifier = Modifier.height(64.dp))
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
-            .clip(RoundedCornerShape(25.dp))
-            .background(Color.White.copy(alpha = 0.5f))
-            .padding(8.dp)
-    ){
-        Card {
-            Column(
-            ) {
-                Text(
-                    text = "Offers",
-                    style = typography.h5,
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
-        }
-        if (offers.isNotEmpty()) {
-            // Mostrar la lista de ofertas
-            OfferList(offers = offers, navController = navController)
+            .padding(16.dp)
+    ) {
+        androidx.compose.material.Text(
+            text = "My Offers",
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.padding(8.dp)
+        )
+
+        if (myOffers.isNotEmpty()) {
+            // Muestra la lista de ofertas del usuario
+            MyOffersList(myOffers = myOffers, navController = navController)
         } else {
-            // Manejar cuando no hay ofertas disponibles
-            Text(text = "Not exist offers")
+            // Maneja cuando no hay ofertas disponibles para el usuario
+            androidx.compose.material.Text(text = "No offers available for this user")
         }
     }
+    Spacer(modifier = Modifier.height(64.dp))
     BottomNavigation(
         modifier = Modifier
             .height(64.dp),
@@ -113,7 +95,7 @@ fun OfferScreen(offerViewModel: OfferViewModel, navController: NavHostController
             BottomNavigationItem(
                 icon = { Icon(item.icon, contentDescription = item.title, tint = Color.White) },
                 label = {
-                    androidx.compose.material3.Text(
+                    Text(
                         text = item.title,
                         color = Color.White,
                         style = TextStyle(fontSize = 12.sp)
@@ -148,18 +130,17 @@ fun OfferScreen(offerViewModel: OfferViewModel, navController: NavHostController
 }
 
 @Composable
-fun OfferList(offers: List<OfferResponse>, navController: NavHostController) {
+fun MyOffersList(myOffers: List<OfferResponse>, navController: NavHostController) {
     LazyColumn {
-        items(offers) { offer ->
-            OfferItem(offer = offer, offerViewModel = viewModel(), navController = navController)
+        items(myOffers) { myOffer ->
+            MyOfferItem(myOffer = myOffer, offerViewModel = viewModel() ,navController = navController)
         }
     }
 }
-
 @Composable
-fun OfferItem(offer: OfferResponse, offerViewModel: OfferViewModel, navController: NavHostController) {
-    var isDialogVisible by remember { mutableStateOf(false) }
-    var userData by remember { mutableStateOf<UserProfile?>(null) }
+fun MyOfferItem(myOffer: OfferResponse, offerViewModel: OfferViewModel ,navController: NavHostController) {
+    // Utiliza una estructura similar a OfferItem, ajusta según tus necesidades
+    // Puedes reutilizar el componente OfferItem si ambos elementos son similares
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -171,19 +152,23 @@ fun OfferItem(offer: OfferResponse, offerViewModel: OfferViewModel, navControlle
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(
-                text = "Price Offer: ${offer.offerPrice}",
-                style = typography.body1
+            androidx.compose.material.Text(
+                text = "Price Offer: ${myOffer.offerPrice}",
+                style = MaterialTheme.typography.body1
             )
-            Text(
-                text = "Status: ${offer.offerStatus}",
-                style = typography.body1
+            androidx.compose.material.Text(
+                text = "ID: ${myOffer.offerStatus}",
+                style = MaterialTheme.typography.body1
+            )
+            androidx.compose.material.Text(
+                    text = "Status: ${myOffer.id}",
+            style = MaterialTheme.typography.body1
             )
             val cartItems = remember { mutableStateOf<List<CartItemResponse>>(emptyList()) }
 
-            LaunchedEffect(key1 = offer.shoppingCartId) {
+            LaunchedEffect(key1 = myOffer.shoppingCartId) {
                 try {
-                    val response = apiService.getCartItemsByShoppingCart(offer.shoppingCartId)
+                    val response = RetrofitClient.apiService.getCartItemsByShoppingCart(myOffer.shoppingCartId)
                     cartItems.value = response
                 } catch (e: Exception) {
                     // Manejar errores según tus necesidades
@@ -192,7 +177,7 @@ fun OfferItem(offer: OfferResponse, offerViewModel: OfferViewModel, navControlle
 
             if (cartItems.value.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Products:", style = typography.subtitle1)
+                androidx.compose.material.Text(text = "Products:", style = MaterialTheme.typography.subtitle1)
                 for (cartItem in cartItems.value) {
                     Box(
                         modifier = Modifier
@@ -216,28 +201,29 @@ fun OfferItem(offer: OfferResponse, offerViewModel: OfferViewModel, navControlle
                                         .padding(8.dp)
                                 )
                             }
-                            Text(
+                            androidx.compose.material.Text(
                                 text = "Products: ${cartItem.product.productName}",
-                                style = typography.body2
+                                style = MaterialTheme.typography.body2
                             )
-                            Text(
+                            androidx.compose.material.Text(
                                 text = "Quantity: ${cartItem.productQuantity}",
-                                style = typography.body2
+                                style = MaterialTheme.typography.body2
                             )
-                            Text(
+                            androidx.compose.material.Text(
                                 text = "Price: ${cartItem.cartSubtotal}",
-                                style = typography.body2
+                                style = MaterialTheme.typography.body2
                             )
                         }
 
                     }
                 }
             } else {
-                Text(
+                androidx.compose.material.Text(
                     text = "No hay elementos en el carrito disponibles para esta oferta",
-                    style = typography.body1
+                    style = MaterialTheme.typography.body1
                 )
             }
+            Spacer(modifier = Modifier.height(16.dp))
             Spacer(modifier = Modifier.height(16.dp))
 
             // Botón para actualizar la oferta
@@ -246,58 +232,25 @@ fun OfferItem(offer: OfferResponse, offerViewModel: OfferViewModel, navControlle
             Button(
                 onClick = {
                     val offerStatusUpdate = OfferStatusUpdate(
-                        id = offer.id,
-                        offerStatus = "Accepted", // Cambia el estado según tus necesidades
-                        offerPrice = offer.offerPrice, // Mantén el precio
-                        userId = offer.userId, // Mantén el ID del usuario
-                        shoppingCartId = offer.shoppingCartId // Mantén el ID del carrito
+                        id = myOffer.id,
+                        offerStatus = "Closed", // Cambia el estado según tus necesidades
+                        offerPrice = myOffer.offerPrice, // Mantén el precio
+                        userId = myOffer.userId, // Mantén el ID del usuario
+                        shoppingCartId = myOffer.shoppingCartId // Mantén el ID del carrito
                     )
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {
-                            userData = apiService.getUserData(offer.userId)
-                            // Imprime el perfil del usuario en el log
-                            Log.d("UserProfile", "User Profile: $userData")
-
-                            isDialogVisible = true
-                        } catch (e: Exception) {
-                            Log.e("APIError", "Error al obtener el perfil del usuario: ${e.message}")
-                        }
-                    }
-
-                    offerViewModel.updateOfferStatus(offer.id, offerStatusUpdate)
+                    navController.navigate("Offer")
+                    offerViewModel.updateOfferStatus(myOffer.id, offerStatusUpdate)
+                    offerViewModel.deleteOffer(myOffer.id)
                 },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
             ) {
-                Text(text = "Accept Offer")
+                androidx.compose.material.Text(text = "Confirm Sale")
             }
-            if (isDialogVisible) {
-                AlertDialog(
-                    onDismissRequest = {
-                        // Cierra el cuadro de diálogo cuando se hace clic fuera de él
-                        isDialogVisible = false
-                    },
-                    title = {
-                        Text(text = "Contact with the user")
-                    },
-                    text = {
-                        // Muestra la información del usuario en el cuadro de diálogo
-                        Text(text = "Phone: ${userData?.phone}")
-
-                        // Agrega más información según la estructura de tu UserProfile
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                // Cierra el cuadro de diálogo cuando se hace clic en el botón de confirmación
-                                isDialogVisible = false
-                            }
-                        ) {
-                            Text(text = "OK")
-                        }
-                    }
-                )
-            }
+            // Resto de la información de la oferta y botones, según tus necesidades
         }
     }
 }
+
+
+

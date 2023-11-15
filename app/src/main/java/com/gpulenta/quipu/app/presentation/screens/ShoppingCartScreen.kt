@@ -102,6 +102,23 @@ fun ShoppingCartScreen(viewModel: ShoppingCartViewModel, navController: NavHostC
         }
         val userId = sharedPreferences.getLong("id", 1)
         val shoppingCartId = sharedPreferences.getLong("idShoppingCart", 0L)
+        //
+        Button(
+            onClick = {
+                navController.navigate("Payment")
+            },
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .height(36.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF1621DA),
+                contentColor = Color.White
+            ),
+        ) {
+            Text("Debit Card or Credit Card")
+        }
+
         Button(
             onClick = {
                 // Realizar una solicitud POST al servidor
@@ -125,7 +142,7 @@ fun ShoppingCartScreen(viewModel: ShoppingCartViewModel, navController: NavHostC
                 .fillMaxWidth()
                 .height(36.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFBA1F33),
+                containerColor = Color(0xFF17CE6A),
                 contentColor = Color.White
             ),
         ) {

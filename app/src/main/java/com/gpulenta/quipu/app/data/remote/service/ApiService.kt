@@ -78,4 +78,10 @@ interface ApiService {
     @DELETE("payment/{id}")
     suspend fun deletePayment(@Path("id") paymentId: Long): Response<Void>
 
+    @GET("offer/find-by-userid/{id}")
+    suspend fun getOffersByUser(@Path("id") userId: Long): OfferResponse
+
+    @DELETE("offer/{id}")
+    suspend fun deleteOffer(@Path("id") id: Long): Response<Void>
+
 }
